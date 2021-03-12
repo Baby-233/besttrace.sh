@@ -1,0 +1,38 @@
+name: update_besttrace
+
+on:
+  schedule:
+    - cron: 45 12 * * *
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: run
+        run: |
+          new_path=new_besttrace4linux.zip
+          old_path=file/besttrace4linux.zip
+          wget https://cdn.ipip.net/17mon/besttrace4linux.zip -O $new_path
+          new_md5=$(md5sum $new_path|cut -d" " -f1)
+          old_md5=$(md5sum $old_path|cut -d" " -f1)
+          if [ -e $new_path ]; then
+            if [ "$new_md5" == "$old_md5" ]; then
+              exit 0
+            fi
+          else
+            rm -f $old_path
+            mv $new_path $old_path
+          fi
+
+      - name: Push changes
+        run: |
+          git add -A
+          git commit -m "Action commit - `date +%Y%m%d`"
+      - uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.ACTIONS_PAT }}
+          branch: ${{ github.ref }}
