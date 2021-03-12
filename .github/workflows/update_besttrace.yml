@@ -30,6 +30,8 @@ jobs:
 
       - name: Push changes
         run: |
+          git config --global user.email 'action@github.com'
+          git config --global user.name 'action'
           git add -A
           git commit -m "Action commit - `date +%Y%m%d`"
       - uses: ad-m/github-push-action@master
