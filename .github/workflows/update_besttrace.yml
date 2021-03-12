@@ -12,20 +12,26 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: run
+      - name: Download
         run: |
+          path=./file/
           new_path=new_besttrace4linux.zip
           old_path=file/besttrace4linux.zip
+
           wget https://cdn.ipip.net/17mon/besttrace4linux.zip -O $new_path
+
           new_md5=$(md5sum $new_path|cut -d" " -f1)
           old_md5=$(md5sum $old_path|cut -d" " -f1)
+
           if [ -e $new_path ]; then
             if [ "$new_md5" == "$old_md5" ]; then
               exit 0
             fi
           else
-            rm -f $old_path
+            rm -rf $path
+            mkdir -p $path
             mv $new_path $old_path
+            unzip -d $path $old_path
           fi
 
       - name: Push changes
@@ -33,7 +39,7 @@ jobs:
           git config --global user.email 'action@github.com'
           git config --global user.name 'action'
           git add -A
-          git commit -m "Action commit - `date +%Y%m%d`"
+          git commit -m "Update - `date +%Y%m%d`"
       - uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.ACTIONS_PAT }}
