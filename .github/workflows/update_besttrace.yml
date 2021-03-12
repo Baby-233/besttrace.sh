@@ -16,22 +16,22 @@ jobs:
         run: |
           path=./file/
           new_path=new_besttrace4linux.zip
-          old_path=file/besttrace4linux.zip
+          old_path=${path}besttrace4linux.zip
 
-          wget https://cdn.ipip.net/17mon/besttrace4linux.zip -O $new_path
+          wget https://cdn.ipip.net/17mon/besttrace4linux.zip -O ${new_path}
 
-          if [ -e $new_path ]; then
-            new_md5=$(md5sum $new_path|cut -d" " -f1)
-            old_md5=$(md5sum $old_path|cut -d" " -f1)
-            
+          if [ -e ${old_path} ]; then
+            new_md5=$(md5sum ${new_path}|cut -d" " -f1)
+            old_md5=$(md5sum ${old_path}|cut -d" " -f1)
+
             if [ "$new_md5" == "$old_md5" ]; then
               exit 0
             fi
           else
-            rm -rf $path
-            mkdir -p $path
-            mv $new_path $old_path
-            unzip -d $path $old_path
+            rm -rf ${path}
+            mkdir -p ${path}
+            mv ${new_path} ${old_path}
+            unzip -d ${path} ${old_path}
           fi
 
       - name: Push changes
