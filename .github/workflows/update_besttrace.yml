@@ -25,6 +25,7 @@ jobs:
             old_md5=$(md5sum ${old_path}|cut -d" " -f1)
 
             if [ "$new_md5" == "$old_md5" ]; then
+              rm -f $new_path
               exit 0
             fi
           else
