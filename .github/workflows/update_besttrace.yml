@@ -39,7 +39,7 @@ jobs:
           git config --global user.email 'action@github.com'
           git config --global user.name 'action'
           git add -A
-          git commit -m "Update - `date +%Y%m%d`"
+          git commit -m "Update - `date +%Y%m%d`" || echo "Nothing to update"
       - uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.ACTIONS_PAT }}
