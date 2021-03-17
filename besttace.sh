@@ -14,7 +14,7 @@ if [ "$besttrace" ]; then
 red='\e[31m'
 non='\e[0m'
 clear
-echo -e "执行${red}${besttrace} ip${non}开始运行
+echo -e "执行${red}${besttrace} 域名/ip${non}开始运行
 例子如下：
 北京电信:${red}${besttrace} 113.59.224.1${non}
 北京联通:${red}${besttrace} 61.49.137.5${non}
